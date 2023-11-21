@@ -1,0 +1,6 @@
+../Core/Src/PR_Buck.c:7:6:duty_out_dec	24	static
+../Core/Src/PR_Buck.c:41:6:duty_out_inc	24	static
+../Core/Src/PR_Buck.c:81:6:duty_out_off	16	static
+../Core/Src/PR_Buck.c:87:6:duty_in_dec	24	static
+../Core/Src/PR_Buck.c:107:6:duty_in_inc	24	static
+../Core/Src/PR_Buck.c:128:6:duty_in_off	16	static

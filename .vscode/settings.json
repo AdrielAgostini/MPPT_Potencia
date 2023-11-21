@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "dr_buck.h": "c",
+        "pr_buck.h": "c",
+        "dr_adc.h": "c"
+    }
+}

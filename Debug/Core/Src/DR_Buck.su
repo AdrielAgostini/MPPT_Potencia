@@ -1,0 +1,3 @@
+../Core/Src/DR_Buck.c:4:6:BUCK_init	8	static
+../Core/Src/DR_Buck.c:9:10:getduty	24	static
+../Core/Src/DR_Buck.c:23:6:setduty	16	static

@@ -1,0 +1,3 @@
+../Core/Src/Timers.c:14:6:TimerStart	24	static
+../Core/Src/Timers.c:20:6:TimerEvent	16	static
+../Core/Src/Timers.c:31:6:HAL_IncTick	16	static
