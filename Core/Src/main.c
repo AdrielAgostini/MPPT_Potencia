@@ -18,7 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include <string.h>
+
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -66,153 +66,12 @@ static void MX_TIM3_Init(void);
 static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
 void T_Led_Out(void);
-void debug_function(void);
-void serial_send(uint16_t *);
-void serial_send2(void);
-void serial_send3(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 void T_Led_Out(void){
   flag_led=1;
-}
-void serial_send4(void){
-	  char bufferTxServer[70];
-	  int16_t ADC_VAL[5];
-	  uint16_t duty[2];
-	  int8_t k=0;
-	  for (k=0;k<70;k++){
-		  bufferTxServer[k] = '\0';
-	  }
-	  ADC_VAL[VOUT] = getValue(VOUT);
-	  ADC_VAL[VIN] = getValue(VIN);
-	  ADC_VAL[IOUT] = getValue(IOUT);
-	  ADC_VAL[IIN] = getValue(IIN);
-	  duty[0] = (getduty(BUCK_IN)*1000)/PERIOD;
-	  duty[1] = (getduty(BUCK_OUT)*1000)/PERIOD;
-	  sprintf(bufferTxServer, "{\"vin\":%d,\"vmed\":0,\"vout\":%d,\"cin\":%d,\"cout\":%d,\"d1\":%d,\"d2\":%d}\n",
-			  ADC_VAL[VIN],
-			  ADC_VAL[VOUT],
-			  ADC_VAL[IIN],
-			  ADC_VAL[IOUT],
-			  duty[0],
-			  duty[1]);
-	  HAL_UART_Transmit(&huart1, bufferTxServer, strlen(bufferTxServer), 100);
-}
-void serial_send3(void){
-  int32_t P_in = 0, P_out;
-  uint16_t duty[2];
-  uint32_t iout, vout;
-  char bufferTxServer[30];
-  
-  vout = getValue(VOUT);
-  iout = getValue(IOUT);
-  P_out = iout * vout / 1000;
-  duty[0] = getduty(BUCK_IN) * 100 / PERIOD;
-  duty[1] = getduty(BUCK_OUT) * 100 / PERIOD;
-
-	sprintf(bufferTxServer, "\n%d  %d  %d  %d\n", iout, vout, P_out, duty[1]);
-  HAL_UART_Transmit(&huart1, bufferTxServer, sizeof(bufferTxServer), 100);
-}
-
-
-
-void serial_send2(void){
-  int32_t P_in = 0, P_out;
-  uint16_t duty[2];
-  uint32_t iin, vi;
-  char bufferTxServer[30];
-  
-  vi = getValue(VIN);
-  iin = getValue(IIN);
-  P_in = vi * iin / 1000;
-  duty[0] = getduty(BUCK_IN);
-  duty[1] = getduty(BUCK_OUT);
-
-	sprintf(bufferTxServer, "\n%d  %d  %d  %d\n", iin, vi, P_in, duty[0]);
-  HAL_UART_Transmit(&huart1, bufferTxServer, sizeof(bufferTxServer), 1000);
-}
-
-void debug_function(void){
-  int16_t ADC_VAL[5];  
-  TIM3->CCR1 = DUTY1;
-  TIM3->CCR2 = DUTY2;
-  HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
- // ADC_VAL[VOUT] = getValue(VOUT);
-  //ADC_VAL[VIN] = getValue(VIN);
-  ADC_VAL[VINTRM] = getValue(VINTRM);
-  //ADC_VAL[IOUT] = getValue(IOUT);
-  ADC_VAL[IIN] = getValue(IIN);
-
-  serial_send(ADC_VAL);
-}
-
-void serial_send(uint16_t adc_values[5]){
-  uint32_t P_in, P_out;
-  uint16_t duty[2];
-  char bufferTxServer[15] = {"\0"} ;
-
-  //P_in = adc_values[IIN] * adc_values[VIN];
-  //P_out = adc_values[IOUT] * adc_values[VOUT];
-
-
-     duty[0] = getduty(BUCK_IN);
-     duty[1] = getduty(BUCK_OUT);
-
-//bufferTxServer[97] = '\n';
-//bufferTxServer[98] = '\n';
-    // uint32_t P_in, P_out;
-    // uint16_t aux;
-    // uint8_t i=1;
-    // uint16_t duty[2];
-    // uint8_t linea_1[] = {"\nPw in: "};
-    // uint8_t linea_2 = {"\nPw out: "};
-    // uint8_t linea_3 = {"\n|\tI_in\t|\tI_out\t|\tV_in\t|\tV_intrm\t|\tV_out\t|\n"};
-    // uint8_t linea_5 = {"\n|\tduty in\t|\tduty out\t|\n"};
-    // uint8_t cell_o = {"|\t"};
-    // uint8_t cell_c = {"\t|"};
-    
-/*
-    sprintf(bufferTxServer, "Vout: %d\nVin: %d\nVmed: %d\nIout: %d\nIin: %d\nduty_in: %d\nduty_out %d\n", adc_values[0],
-          adc_values[1],adc_values[2],adc_values[3],adc_values[4],duty[0],duty[1]
-          );
-          */
-	sprintf(bufferTxServer, "\n%d  %d\n",adc_values [VINTRM],adc_values[IIN]);
-    HAL_UART_Transmit(&huart1, bufferTxServer, sizeof(bufferTxServer), 100);
-    // P_in = adc_values[IIN] * adc_values[VIN];
-    // P_out = adc_values[IOUT] * adc_values[VOUT];
-
-
-    // duty[0] = getduty(BUCK_IN);
-    // duty[1] = getduty(BUCK_OUT);
-
-    //  HAL_UART_Transmit(&huart1, &i, 1, 1000);
-    //  /* Envio Linea 1 : Potencia entrada*/
-    //  HAL_UART_Transmit(&huart1, linea_1, sizeof(linea_1), 1000);
-    //  HAL_UART_Transmit(&huart1, &P_in, 1, 1);
-
-
-    // /* Envio Linea 2 : Potencia salida*/
-    // HAL_UART_Transmit(&huart1, linea_2, sizeof(linea_1), 1);
-    // HAL_UART_Transmit(&huart1, &P_out, 1, 1);
-
-
-    // HAL_UART_Transmit(&huart1, linea_3, sizeof(linea_1), 50);
-    // for(i=0;i<5;i++){
-    //     HAL_UART_Transmit(&huart1, cell_o, sizeof(cell_o), 5);
-    //     HAL_UART_Transmit(&huart1, adc_values[i], 1, 1);
-    //     HAL_UART_Transmit(&huart1, cell_c, sizeof(cell_c), 5);
-    // }
-
-    // HAL_UART_Transmit(&huart1, linea_3, sizeof(linea_1), 50);
-    // for(i=0;i<2;i++){
-    //     HAL_UART_Transmit(&huart1, cell_o, sizeof(cell_o), 5);
-    //     HAL_UART_Transmit(&huart1, duty[i], 1, 1);
-    //     HAL_UART_Transmit(&huart1, cell_c, sizeof(cell_c), 5);
-    // }
-
-    // HAL_UART_Transmit(&huart1, "\n", 1, 10);
 }
 /* USER CODE END 0 */
 
@@ -256,47 +115,39 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
-    /*
-    TIM3->CCR1 = DUTY1;
-	  TIM3->CCR2 = DUTY2;
-    */
+  while (1){
 	  if (DEBUG_MODE == 1){
 		  if (flag_led == 1){
-			  debug_function();
+			  debug_function_1();
 			  flag_led = 0;
 			  TimerStart(1,L_PERIOD,&T_Led_Out);
-    }}
+      }
+    }
 	  else if (DEBUG_MODE == 2){
 		  if (flag_led == 1){
-
-			  Mde_MPPT_In();
-			  serial_send2();
+        debug_function_2();
 			  flag_led = 0;
 			  TimerStart(1,L_PERIOD,&T_Led_Out);
 		  }
     }
-  else if (DEBUG_MODE == 3){
-    if (flag_led == 1){
-    	TIM3->CCR1 = DUTY1;
-			  Mde_MPPT_Out();
-			  //serial_send4();
-			  flag_led = 0;
-			  TimerStart(1,L_PERIOD,&T_Led_Out);
+    else if (DEBUG_MODE == 3){
+      if (flag_led == 1){
+        debug_function_3();
+        flag_led=0;
+        TimerStart(1,L_PERIOD,&T_Led_Out);
         HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
-  }}
-  else{
-	  Mde_MPPT_Out();
-
-	}
-    /* Prueba Titilar LED */
-
+      }
+    }
+    else{
+      Mde_MPPT_Out();
+    }
+    TimerEvent();
+  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  TimerEvent();
-  }
+
+
   /* USER CODE END 3 */
 }
 

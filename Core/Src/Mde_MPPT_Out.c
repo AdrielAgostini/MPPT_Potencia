@@ -26,7 +26,7 @@ void Mde_MPPT_Out(void){
             if (vout_m < 2500)
 				duty_out_off();
             TimerStart (0,IDDLE_TIME_OUT,&T_Hand_Out);
-            serial_send4();
+            serial_send_4();
             state=IDDLE;
             break;
         case IDDLE:

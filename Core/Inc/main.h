@@ -33,6 +33,7 @@ extern "C" {
 /* USER CODE BEGIN Includes */
 #include "Mde_MPPT_Out.h"
 #include "Mde_MPPT_In.h"
+#include "debug.h"
 
 /* USER CODE END Includes */
 

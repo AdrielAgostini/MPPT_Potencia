@@ -1,0 +1,7 @@
+../Core/Src/debug.c:8:6:serial_send_4	128	static
+../Core/Src/debug.c:32:6:serial_send_3	64	static
+../Core/Src/debug.c:48:6:serial_send_2	64	static
+../Core/Src/debug.c:64:6:serial_send	32	static
+../Core/Src/debug.c:73:6:debug_function_1	24	static
+../Core/Src/debug.c:83:6:debug_function_2	8	static
+../Core/Src/debug.c:88:6:debug_function_3	8	static

@@ -5,6 +5,7 @@
 "./Core/Src/PR_Buck.o"
 "./Core/Src/PR_UART.o"
 "./Core/Src/Timers.o"
+"./Core/Src/debug.o"
 "./Core/Src/main.o"
 "./Core/Src/serial.o"
 "./Core/Src/stm32f1xx_hal_msp.o"
